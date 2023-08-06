@@ -1,4 +1,4 @@
-package casestudy1.api.routing
+package api.routing
 
 import io.ktor.http.*
 import io.ktor.server.routing.*
