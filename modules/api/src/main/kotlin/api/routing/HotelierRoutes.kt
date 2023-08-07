@@ -5,11 +5,14 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import application.item.*
+import dal.db.DatabaseContext
+import dal.db.DbFactory
 import dal.repository.ItemRepository
 import io.ktor.http.*
 
 fun Route.hotelierRouting() {
-    val itemsService = ItemService(ItemRepository())
+    val dbContext = DatabaseContext()
+    val itemsService = ItemService(ItemRepository(dbContext))
 
     route("/hoteliers"){
         get("/{hotelierId}/items") {

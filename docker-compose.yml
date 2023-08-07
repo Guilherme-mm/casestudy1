@@ -2,9 +2,20 @@ version: '3.9'
 services:
   application:
     container_name: application
-    image: casestudy1:latest
+    image: casestudy1-application:latest
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: infra/application/Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      - relational-db
+
+  relational-db:
+    container_name: relational_db
+    image: casestudy1-relational_db:latest
+    build:
+      context: .
+      dockerfile: infra/db/Dockerfile
+    ports:
+      - "5432:5432"

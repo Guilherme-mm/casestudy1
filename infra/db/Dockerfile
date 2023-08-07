@@ -1,0 +1,5 @@
+FROM postgres:14.4
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD admin
+ENV POSTGRES_DB casestudy1

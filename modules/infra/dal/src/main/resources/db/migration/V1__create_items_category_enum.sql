@@ -1,0 +1,1 @@
+CREATE TYPE item_category AS ENUM ('hotel', 'alternative', 'hostel', 'lodge', 'resort', 'guest-house')

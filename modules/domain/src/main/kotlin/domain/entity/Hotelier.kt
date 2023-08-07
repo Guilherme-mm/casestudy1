@@ -1,3 +1,3 @@
 package domain.entity
 
-class Hotelier (private val id: Int)
+class Hotelier (val id: Int)

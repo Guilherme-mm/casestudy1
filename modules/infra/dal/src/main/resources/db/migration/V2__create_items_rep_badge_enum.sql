@@ -1,0 +1,1 @@
+CREATE TYPE item_reputation_badge AS ENUM ('green', 'yellow', 'red')

@@ -2,7 +2,7 @@ FROM gradle:8-jdk19
 
 WORKDIR /app
 
-COPY . .
+COPY ../.. .
 
 RUN gradle clean build -x test
 
