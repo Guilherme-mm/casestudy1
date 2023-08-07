@@ -17,7 +17,16 @@ data class ItemDTO (
 ){
     companion object: IModelMapper<ItemDTO, Item> {
         override fun fromEntity(entity: Item): ItemDTO {
-            TODO("Not yet implemented")
+            return ItemDTO(
+                entity.id,
+                entity.name,
+                entity.category.name,
+                entity.imageUrl,
+                entity.reputation,
+                entity.reputationBadge.name,
+                entity.availability,
+                HotelierDTO.fromEntity(entity.hotelier)
+            )
         }
 
         override fun toEntity(dto: ItemDTO): Item {

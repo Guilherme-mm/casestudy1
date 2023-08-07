@@ -14,6 +14,12 @@ suspend fun exceptionHandler (call: ApplicationCall, cause: Throwable) {
             call.response.status(HttpStatusCode.BadRequest)
             call.respond(errorMessage)
         }
+        is ResourceNotFoundException -> {
+            val errorMessage = generateErrorMessage(cause, call.request.uri, HttpStatusCode.NotFound.value)
+
+            call.response.status(HttpStatusCode.NotFound)
+            call.respond(errorMessage)
+        }
     }
 }
 

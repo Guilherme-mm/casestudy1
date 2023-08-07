@@ -15,4 +15,13 @@ class ItemRepository(val dbContext: DatabaseContext) : IItemRepository {
             .where { (Items.hotelierId eq hotelier.id) }
             .map { Items.createEntity(it) }
     }
+
+    override fun getItem(itemId: Int): Item? {
+        return dbContext.database
+            .from(Items)
+            .select()
+            .where { (Items.id eq itemId) }
+            .map { Items.createEntity(it) }
+            .firstOrNull()
+    }
 }
