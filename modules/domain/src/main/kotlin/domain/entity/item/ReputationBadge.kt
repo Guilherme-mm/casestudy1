@@ -1,4 +1,4 @@
-package domain.entity
+package domain.entity.item
 
 enum class ReputationBadge {
     GREEN,

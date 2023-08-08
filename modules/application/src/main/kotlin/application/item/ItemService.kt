@@ -1,9 +1,12 @@
 package application.item
 
+import application.exception.InvalidParameterException
+import application.location.ILocationRepository
+import com.google.gson.Gson
 import domain.entity.Hotelier
-import domain.entity.Item
+import java.lang.IllegalArgumentException
 
-class ItemService (private val itemRepository: IItemRepository){
+class ItemService (private val itemRepository: IItemRepository, private val locationRepository: ILocationRepository){
 
     fun getItemsByHotelierId(hotelierId:Int):MutableList<ItemDTO> {
         val hotelier = Hotelier(hotelierId)
@@ -18,5 +21,20 @@ class ItemService (private val itemRepository: IItemRepository){
         }
 
         return null
+    }
+
+    fun create(item: ItemDTO): Int {
+        try {
+            val itemEntity = ItemDTO.toEntity(item)
+
+            val insertedItemId = itemRepository.create(itemEntity)
+
+            require(itemEntity.location != null) { "Required location attribute could not be found" }
+            locationRepository.create(insertedItemId, itemEntity.location!!)
+            return insertedItemId
+        } catch (exc: IllegalArgumentException) {
+            val gson = Gson()
+            throw InvalidParameterException(gson.toJson(item), exc.message, exc)
+        }
     }
 }

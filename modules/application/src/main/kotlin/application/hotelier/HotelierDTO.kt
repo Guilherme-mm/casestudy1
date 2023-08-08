@@ -14,7 +14,7 @@ class HotelierDTO (
         }
 
         override fun toEntity(dto: HotelierDTO): Hotelier {
-            TODO("Not yet implemented")
+            return Hotelier(dto.id)
         }
 
         override fun fromEntity(entityList: List<Hotelier>): MutableList<HotelierDTO> {

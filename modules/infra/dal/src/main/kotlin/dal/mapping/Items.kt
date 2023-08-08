@@ -2,9 +2,10 @@ package dal.mapping
 
 import dal.db.DatabaseContext
 import dal.repository.HotelierRepository
-import domain.entity.Item
-import domain.entity.ItemCategory
-import domain.entity.ReputationBadge
+import dal.repository.LocationRepository
+import domain.entity.item.Item
+import domain.entity.item.ItemCategory
+import domain.entity.item.ReputationBadge
 import org.ktorm.dsl.QueryRowSet
 import org.ktorm.schema.*
 
@@ -14,9 +15,11 @@ object Items : BaseTable<Item>("t_item"){
     val category = varchar("category")
     val imageUrl = varchar("image_url")
     val reputation = int("reputation")
-    val reputationBadge= varchar("reputation_badge")
     val availability = int("availability")
     val hotelierId = int("hotelier_id")
+    val rating = int("rating")
+    val price = int("price")
+    val reputationBadge = varchar("reputation_badge")
 
     override fun doCreateEntity(row: QueryRowSet, withReferences: Boolean): Item {
         var rowCategory = ItemCategory.HOTEL
@@ -26,11 +29,9 @@ object Items : BaseTable<Item>("t_item"){
             rowCategory = ItemCategory.valueOf(row[category]!!.uppercase())
         }
 
-        if(row[reputationBadge] != null) {
-            rowReputationBadge = ReputationBadge.valueOf(row[reputationBadge]!!.uppercase())
-        }
-
-        var rowHotelier = HotelierRepository(DatabaseContext()).getById(row[hotelierId]!!)!!
+        val dbContext = DatabaseContext()
+        val rowHotelier = HotelierRepository(dbContext).getById(row[hotelierId]!!)!!
+        val rowLocation = LocationRepository(dbContext).getByItemId(row[id]!!)!!
 
         return Item(
         row[id] ?: 0,
@@ -38,9 +39,11 @@ object Items : BaseTable<Item>("t_item"){
             rowCategory,
             row[imageUrl] ?: "null",
             row[reputation] ?: 0,
-            rowReputationBadge,
             row[availability] ?: 0,
-            rowHotelier
+            rowHotelier,
+            row[rating] ?: 0,
+            row[price] ?: 0,
+            rowLocation
         )
     }
 }
