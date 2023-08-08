@@ -38,5 +38,22 @@ fun Route.itemRouting(dbContext: DatabaseContext) {
             call.response.status(HttpStatusCode.Created)
             call.respondText("Item created with success")
         }
+
+        put ("{itemId}"){
+            val item = call.receive<ItemDTO>()
+            val itemId: Int = call.parameters["itemId"]?.toInt() ?: throw MissingRouteParameterException(call.request.uri, "The required parameter <item id> could not be found on the request")
+
+            val itemsService = ItemService(ItemRepository(dbContext), LocationRepository(dbContext))
+
+            val success = itemsService.update(itemId, item)
+
+            if(success) {
+                call.response.status(HttpStatusCode.OK)
+                call.respondText("Item updated with success")
+            } else {
+                call.response.status(HttpStatusCode.BadRequest)
+                call.respondText("Something went wrong trying to update the requested item")
+            }
+        }
     }
 }

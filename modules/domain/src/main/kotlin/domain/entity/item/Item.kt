@@ -5,7 +5,7 @@ import domain.entity.item.specs.*
 import domain.entity.location.Location
 
 class Item (
-    val id: Int?,
+    var id: Int?,
     val name: String,
     val category: ItemCategory,
     val imageUrl: String,

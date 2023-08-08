@@ -29,4 +29,18 @@ class LocationRepository(val dbContext: DatabaseContext) : ILocationRepository {
             set(it.country, location.country)
         }
     }
+
+    override fun update(itemId: Int, location: Location): Boolean {
+        val alteredRows = dbContext.database.update(Locations) {
+            set(it.itemId, itemId)
+            set(it.city, location.city)
+            set(it.address, location.address)
+            set(it.state, location.state)
+            set(it.zipCode, location.zipCode)
+            set(it.country, location.country)
+            where { it.itemId eq itemId }
+        }
+
+        return alteredRows >= 1
+    }
 }

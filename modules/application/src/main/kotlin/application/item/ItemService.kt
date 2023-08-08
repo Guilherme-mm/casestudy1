@@ -27,11 +27,27 @@ class ItemService (private val itemRepository: IItemRepository, private val loca
         try {
             val itemEntity = ItemDTO.toEntity(item)
 
+            require(itemEntity.location != null) { "Required location attribute could not be found" }
+
             val insertedItemId = itemRepository.create(itemEntity)
 
-            require(itemEntity.location != null) { "Required location attribute could not be found" }
             locationRepository.create(insertedItemId, itemEntity.location!!)
             return insertedItemId
+        } catch (exc: IllegalArgumentException) {
+            val gson = Gson()
+            throw InvalidParameterException(gson.toJson(item), exc.message, exc)
+        }
+    }
+
+    fun update(itemId: Int, item: ItemDTO): Boolean {
+        try {
+            val itemEntity = ItemDTO.toEntity(item)
+
+            require(itemEntity.location != null) { "Required location attribute could not be found" }
+            val itemResult =itemRepository.update(itemId, itemEntity)
+
+            val locationResult = locationRepository.update(itemId, itemEntity.location!!)
+            return itemResult && locationResult
         } catch (exc: IllegalArgumentException) {
             val gson = Gson()
             throw InvalidParameterException(gson.toJson(item), exc.message, exc)
