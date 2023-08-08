@@ -70,5 +70,20 @@ fun Route.itemRouting(dbContext: DatabaseContext) {
                 call.respondText("Something went wrong trying to delete the requested item")
             }
         }
+
+        post ("/book/{itemId}") {
+            val itemId: Int = call.parameters["itemId"]?.toInt() ?: throw MissingRouteParameterException(call.request.uri, "The required parameter <item id> could not be found on the request")
+            val itemsService = ItemService(ItemRepository(dbContext), LocationRepository(dbContext))
+
+            val success = itemsService.bookItem(itemId)
+
+            if(success) {
+                call.response.status(HttpStatusCode.OK)
+                call.respondText("Item booked with success")
+            } else {
+                call.response.status(HttpStatusCode.BadRequest)
+                call.respondText("Something went wrong trying to book the requested item")
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ package dal.repository
 import application.hotelier.IHotelierRepository
 import dal.db.DatabaseContext
 import dal.mapping.Hoteliers
-import domain.entity.Hotelier
+import domain.entity.hotelier.Hotelier
 import org.ktorm.dsl.*
 
 

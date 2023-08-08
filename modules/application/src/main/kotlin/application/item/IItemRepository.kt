@@ -1,6 +1,6 @@
 package application.item
 
-import domain.entity.*
+import domain.entity.hotelier.Hotelier
 import domain.entity.item.Item
 
 interface IItemRepository {

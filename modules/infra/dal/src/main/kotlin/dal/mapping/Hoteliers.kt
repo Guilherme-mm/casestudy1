@@ -1,7 +1,6 @@
 package dal.mapping
 
-import dal.mapping.Items.primaryKey
-import domain.entity.Hotelier
+import domain.entity.hotelier.Hotelier
 import org.ktorm.dsl.QueryRowSet
 import org.ktorm.schema.BaseTable
 import org.ktorm.schema.int

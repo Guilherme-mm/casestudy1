@@ -2,6 +2,7 @@ package api.exception
 
 import api.response.ProblemResponse
 import application.exception.CustomException
+import application.exception.FailedOperationException
 import application.exception.InvalidParameterException
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -23,6 +24,12 @@ suspend fun exceptionHandler (call: ApplicationCall, cause: Throwable) {
             call.respond(errorMessage)
         }
         is InvalidParameterException -> {
+            val errorMessage = generateErrorMessage(cause, HttpStatusCode.BadRequest.value)
+
+            call.response.status(HttpStatusCode.BadRequest)
+            call.respond(errorMessage)
+        }
+        is FailedOperationException -> {
             val errorMessage = generateErrorMessage(cause, HttpStatusCode.BadRequest.value)
 
             call.response.status(HttpStatusCode.BadRequest)

@@ -1,7 +1,7 @@
 package application.hotelier
 
 import application.mapping.IModelMapper
-import domain.entity.Hotelier
+import domain.entity.hotelier.Hotelier
 
 class HotelierDTO (
     val id: Int

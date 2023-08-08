@@ -1,6 +1,7 @@
 package domain.entity.item
 
-import domain.entity.Hotelier
+import domain.entity.hotelier.Hotelier
+import domain.entity.item.exception.NoRoomAvailableException
 import domain.entity.item.specs.*
 import domain.entity.location.Location
 
@@ -10,7 +11,7 @@ class Item (
     val category: ItemCategory,
     val imageUrl: String,
     val reputation: Int,
-    val availability: Int,
+    var availability: Int,
     val hotelier: Hotelier,
     val rating: Int,
     val price: Int,
@@ -36,5 +37,9 @@ class Item (
                 ReputationBadge.GREEN
             }
         }
+    }
+    fun bookRoom() {
+        if(availability > 0) --availability
+        else throw NoRoomAvailableException()
     }
 }
