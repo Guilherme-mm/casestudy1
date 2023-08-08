@@ -35,8 +35,9 @@ components:
       type: object
       properties:
         id:
-          description: Hotelier ID
+          description: Hotelier ID (For this case study, must always be 1)
           type: integer
+          default: 1
     Item:
       type: object
       properties:
