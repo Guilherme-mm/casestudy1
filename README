@@ -1,3 +1,4 @@
+README
 ## Architecture Overview
 The project was implemented with a layered approach, using an independent gradle project for each layer. The final result is the following structure:
 
@@ -11,13 +12,13 @@ Root project 'casestudy1'
 
 ```
 
-All sub-projects reside in the `modules folder`. The `infra` folder on the project source was created simply to hold the dockerfiles for the application and postgres services. The OpenAPI specs are stored as an resource of the api project.
+All sub-projects reside in the `modules folder`. The `infra` folder on the project source was created simply to hold the dockerfiles for the application and postgres services. The OpenAPI specs are stored as a resource of the api project.
 
 ## Running the Project
 To execute the application simply run the `docker compose up` command and access localhost on the 8080 port. To facilitate tests, you can use the `/swagger` and `/openapi` paths to see the API specifications and test it.
 
 ## Future Work
-- Implement a proper DI container in order to inject dependencies, specially the database context.
+- Implement a proper DI container in order to inject dependencies, especially the database context.
 - Implement unit testing for each application layer
 - Better handle application configurations, for abstraction and security purposes
 - Handle Serializer errors to be better format responses when required parameters are missing
