@@ -13,7 +13,7 @@ class ItemRepository(val dbContext: DatabaseContext) : IItemRepository {
             .from(Items)
             .select()
             .where { (Items.hotelierId eq hotelier.id) }
-            .map { Items.createEntity(it) }
+            .map { Items.diCreateEntity(dbContext, it) }
     }
 
     override fun getItem(itemId: Int): Item? {
@@ -21,7 +21,7 @@ class ItemRepository(val dbContext: DatabaseContext) : IItemRepository {
             .from(Items)
             .select()
             .where { (Items.id eq itemId) }
-            .map { Items.createEntity(it) }
+            .map { Items.diCreateEntity(dbContext, it) }
             .firstOrNull()
     }
 

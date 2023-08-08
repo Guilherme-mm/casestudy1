@@ -1,0 +1,30 @@
+type: object
+properties:
+  id:
+    description: Item id
+    type: int
+  name:
+    description: Item name
+    type: string
+  category:
+    description: Item category
+    type: string
+    enum:
+      - hotel
+      - alternative
+      - hostel
+      - lodge
+      - resort
+      - guest-house
+  imageUrl:
+    description: Item image url
+    type: string
+  reputation:
+    description: Item reputation. Ranges between 0 and 1000
+  reputationBadge:
+    description: Item reputation badge
+#    type: string
+#    enum:
+#      - RED
+#      - YELLOW
+#      - GREEN

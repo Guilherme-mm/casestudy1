@@ -2,11 +2,13 @@ package api
 
 import api.exception.exceptionHandler
 import api.routing.configureRouting
+import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 
 class App
@@ -24,5 +26,9 @@ fun Application.module() {
         exception<Throwable> {
             call, cause -> exceptionHandler(call, cause)
         }
+    }
+    install(CORS) {
+        anyHost()
+        allowHeader(HttpHeaders.ContentType)
     }
 }

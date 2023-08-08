@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  title: Case Study API
+  description: API developed for a case study based on items booking concept
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:8080
+    description: Development Server
+
+components:
+  schemas:
+    Location:
+      type: object
+      properties:
+        id:
+          description: Location ID
+          type: integer
+        city:
+          description: City name
+          type: string
+        state:
+          description: State name
+          type: string
+        country:
+          description: Country name
+          type: string
+        zipCode:
+          description: ZIP code
+          type: integer
+        address:
+          description: Address
+          type: string
+    Hotelier:
+      type: object
+      properties:
+        id:
+          description: Hotelier ID
+          type: integer
+    Item:
+      type: object
+      properties:
+        id:
+          description: Item ID
+          type: integer
+        name:
+          description: Item name
+          type: string
+          minLength: 11
+          required: true
+        category:
+          description: Item category
+          type: string
+          enum:
+            - hotel
+            - alternative
+            - hostel
+            - lodge
+            - resort
+            - guest-house
+        imageUrl:
+          description: Item image url
+          type: string
+          format: uri
+        reputation:
+          description: Item reputation
+          type: integer
+          minimum: 0
+          maximum: 1000
+        reputationBadge:
+          description: Item reputation badge
+          type: string
+          enum:
+            - RED
+            - YELLOW
+            - GREEN
+        availability:
+          description: The booking capacity of the item
+          type: integer
+        rating:
+          description: Item rating
+          type: integer
+          minimum: 0
+          maximum: 5
+        price:
+          description: Item booking price
+          type: integer
+        location:
+          $ref: '#/components/schemas/Location'
+        hotelier:
+          $ref: '#/components/schemas/Hotelier'
+    ErrorMessage:
+      type: object
+      properties:
+        type:
+          description: Type of the returned error
+          type: string
+        title:
+          description: Human readable title of the error
+          type: string
+        status:
+          description: HTTP Status code of the response
+          type: integer
+        detail:
+          description: Human readable message of the error
+          type: string
+        instance:
+          description: Representation of the state that caused the error
+          type: string
+
+paths:
+  /items:
+    post:
+      description: Creates a new item
+      requestBody:
+        description: Item data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '201':
+          description: Item created
+        '400':
+          description: One or more parameters are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /items/{itemId}:
+    get:
+      description: Returns items based on item id
+      responses:
+        '200':
+          description: Item response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: No item could be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the item to retrieve data
+          required: true
+          schema:
+            type: integer
+    put:
+      description: Updates item data
+      requestBody:
+        description: Item data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Item updated
+        '400':
+          description: One or more parameters are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the item to be updated
+          required: true
+          schema:
+            type: integer
+    delete:
+      description: Deletes an item
+      responses:
+        '200':
+          description: Item removed
+        '400':
+          description: Something went wrong while removing the item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the item to be removed
+          required: true
+          schema:
+            type: integer
+  /items/book/{itemId}:
+    post:
+      description: Creates a new item
+      responses:
+        '201':
+          description: Item booked
+        '400':
+          description: One or more parameters are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the item to be booked
+          required: true
+          schema:
+            type: integer
+  /hoteliers/{hotelierId}/items:
+    get:
+      description: Returns items of a given hotelier
+      responses:
+        '200':
+          description: List of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+      parameters:
+        - name: hotelierId
+          in: path
+          description: ID of the hotelier whose items are going to be listed
+          required: true
+          schema:
+            type: integer

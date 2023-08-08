@@ -21,7 +21,7 @@ object Items : BaseTable<Item>("t_item"){
     val price = int("price")
     val reputationBadge = varchar("reputation_badge")
 
-    override fun doCreateEntity(row: QueryRowSet, withReferences: Boolean): Item {
+    fun diCreateEntity(dbContext: DatabaseContext, row: QueryRowSet): Item {
         var rowCategory = ItemCategory.HOTEL
         var rowReputationBadge = ReputationBadge.GREEN
 
@@ -29,7 +29,7 @@ object Items : BaseTable<Item>("t_item"){
             rowCategory = ItemCategory.valueOf(row[category]!!.uppercase())
         }
 
-        val dbContext = DatabaseContext()
+//        val dbContext = DatabaseContext()
         val rowHotelier = HotelierRepository(dbContext).getById(row[hotelierId]!!)!!
         val rowLocation = LocationRepository(dbContext).getByItemId(row[id]!!)!!
 
@@ -45,5 +45,9 @@ object Items : BaseTable<Item>("t_item"){
             row[price] ?: 0,
             rowLocation
         )
+    }
+
+    override fun doCreateEntity(row: QueryRowSet, withReferences: Boolean): Item {
+        TODO("Not yet implemented")
     }
 }
