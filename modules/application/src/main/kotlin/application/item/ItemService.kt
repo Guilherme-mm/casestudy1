@@ -53,4 +53,11 @@ class ItemService (private val itemRepository: IItemRepository, private val loca
             throw InvalidParameterException(gson.toJson(item), exc.message, exc)
         }
     }
+
+    fun delete(itemId: Int): Boolean {
+        val locationResult = locationRepository.delete(itemId)
+        val itemResult = itemRepository.delete(itemId)
+
+        return itemResult && locationResult
+    }
 }

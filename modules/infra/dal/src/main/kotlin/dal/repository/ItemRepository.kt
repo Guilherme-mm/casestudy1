@@ -57,4 +57,9 @@ class ItemRepository(val dbContext: DatabaseContext) : IItemRepository {
 
         return alteredRows >= 1
     }
+
+    override fun delete(itemId: Int): Boolean {
+        val alteredRows = dbContext.database.delete(Items) { it.id eq itemId }
+        return alteredRows >= 1
+    }
 }

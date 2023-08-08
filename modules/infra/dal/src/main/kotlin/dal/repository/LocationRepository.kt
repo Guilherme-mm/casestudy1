@@ -43,4 +43,9 @@ class LocationRepository(val dbContext: DatabaseContext) : ILocationRepository {
 
         return alteredRows >= 1
     }
+
+    override fun delete(itemId: Int): Boolean {
+        val alteredRows = dbContext.database.delete(Locations) { it.itemId eq itemId }
+        return alteredRows >= 1
+    }
 }

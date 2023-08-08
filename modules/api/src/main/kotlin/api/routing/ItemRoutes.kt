@@ -39,7 +39,7 @@ fun Route.itemRouting(dbContext: DatabaseContext) {
             call.respondText("Item created with success")
         }
 
-        put ("{itemId}"){
+        put ("/{itemId}"){
             val item = call.receive<ItemDTO>()
             val itemId: Int = call.parameters["itemId"]?.toInt() ?: throw MissingRouteParameterException(call.request.uri, "The required parameter <item id> could not be found on the request")
 
@@ -53,6 +53,21 @@ fun Route.itemRouting(dbContext: DatabaseContext) {
             } else {
                 call.response.status(HttpStatusCode.BadRequest)
                 call.respondText("Something went wrong trying to update the requested item")
+            }
+        }
+
+        delete ("/{itemId}") {
+            val itemId: Int = call.parameters["itemId"]?.toInt() ?: throw MissingRouteParameterException(call.request.uri, "The required parameter <item id> could not be found on the request")
+            val itemsService = ItemService(ItemRepository(dbContext), LocationRepository(dbContext))
+
+            val success = itemsService.delete(itemId)
+
+            if(success) {
+                call.response.status(HttpStatusCode.OK)
+                call.respondText("Item deleted with success")
+            } else {
+                call.response.status(HttpStatusCode.BadRequest)
+                call.respondText("Something went wrong trying to delete the requested item")
             }
         }
     }
